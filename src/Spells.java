@@ -1,7 +1,12 @@
 import java.util.HashMap;
 public class Spells {
 
-
+    /*
+    This hash map stores the spells that the user can use based on their
+    level along with a description of what each spell does. Every method
+    that represents a spell (except poison) checks if any key in the hash map
+    matches the spell's name before the spell is cast.
+     */
     private HashMap<String, String> possibleSpells = new HashMap<>();
 
 
@@ -9,43 +14,39 @@ public class Spells {
         possibleSpells.put("Poison", "Does 10 damage per turn.");
     }
 
+    public void putSpell(String spell, String description) {
+        possibleSpells.put(spell, description);
+    }
 
     public void Poison (Player enemy) {
         enemy.setPoisoned(true);
     }
 
 
-    public int Thunder(Player caster, Player enemy) {
-        if (caster.getLevel() > 3 && Math.random() > 0.5) {
-            if (!(possibleSpells.containsKey("Thunder"))) {
-                possibleSpells.put("Thunder", "50% chance to inflict 50 damage.");
+    public void Thunder(Player enemy) {
+        if (possibleSpells.containsKey("Thunder")) {
+            if (Math.random() > 0.5) {
+                enemy.takeDamage(50);
+            } else {
+                System.out.println("You missed!");
             }
-            return 50;
         }
-        return 0;
     }
 
 
-    public int Heal(Player caster) {
-        if (caster.getLevel() > 7) {
-            if (!(possibleSpells.containsKey("Heal"))) {
-                possibleSpells.put("Heal", "Heals user for 3 times their level and poison.");
-            }
-            return 3 * caster.getLevel();
+    public void Heal(Player caster) {
+        if (possibleSpells.containsKey("Heal")) {
+            caster.takeDamage(-3 * caster.getLevel());
+            System.out.println("You have healed to " + caster.getHealth() + " health!");
         }
-        return 0;
     }
 
 
-    public void Freeze (Player caster, Player enemy) {
-        if (caster.getLevel() > 11) {
-            if (!(possibleSpells.containsKey("Freeze"))) {
-                possibleSpells.put("Freeze", "Opponent cannot move on this turn.");
-            }
+    public void Freeze (Player enemy) {
+        if ((possibleSpells.containsKey("Freeze"))) {
             enemy.setFrozen(true);
         }
     }
-
 
     public HashMap<String, String> getPossibleSpells() {
         return possibleSpells;

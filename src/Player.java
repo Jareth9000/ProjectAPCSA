@@ -22,27 +22,29 @@ public class Player {
         damage = 1;
     }
 
-
     public void takeDamage(int dmg) {
         if (health - dmg < 0) {
             health = 0;
         } else if (health - dmg > max_health) {
-            health = max_health;
+            health = max_health; // for healing cases
         } else {
             health -= dmg;
         }
     }
 
-
-    public void setLevel(int level) {
-        this.level = level;
+    public void levelUp () {
+        level++;
+        int damageIncrease = (int) (Math.random() * 4) + 7;
+        System.out.println("Damage increased by " + damageIncrease);
+        damage += (int) (Math.random() * 7) + 7; // randomized to make every game slightly different from the last
+        System.out.println("Max health increased by " + (damageIncrease * 10 - 40));
+        max_health += damageIncrease * 10 - 40; // an increase that is arbitrary, but balanced
+        health = max_health;
     }
-
 
     public void setPoisoned(boolean poisoned) {
         this.poisoned = poisoned;
     }
-
 
     public void setFrozen(boolean frozen) {
         this.frozen = frozen;
@@ -50,6 +52,10 @@ public class Player {
 
     public void setShielding(boolean shielding) {
         this.shielding = shielding;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
 
     public boolean isShielding() {
@@ -62,6 +68,10 @@ public class Player {
 
     public boolean isFrozen() {
         return frozen;
+    }
+
+    public boolean isDead() {
+        return health == 0;
     }
 
     public int getHealth() {
@@ -84,7 +94,6 @@ public class Player {
     public String getName() {
         return name;
     }
-
 
     public String getInfo () {
         return "Health: " + getHealth() + "\nLevel: " + getLevel() + "\n--Options--" + "\n1. Attack" + "\n2. Spells" + "\n3. Shield";
